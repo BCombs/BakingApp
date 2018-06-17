@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) 2018 Bill Combs
+  -->
+
+<vector android:height="24dp" android:viewportHeight="512"
+    android:viewportWidth="512" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FEA832" android:pathData="M271.901,299.7L241,315h-30v-60c0,-34.501 10.8,-67.5 30,-94.801c19.501,-28.2 48.3,-50.4 82.8,-61.8l44.4,18.301C302.5,154.799 266.499,225 271.901,299.7z"/>
+    <path android:fillColor="#FE9923" android:pathData="M271.901,299.7L241,315V160.199c19.501,-28.2 48.3,-50.4 82.8,-61.8l44.4,18.301C302.5,154.799 266.499,225 271.901,299.7z"/>
+    <path android:fillColor="#3C3A41" android:pathData="M436,0l-30,30l0,120l30,30l60,0l0,-180z"/>
+    <path android:fillColor="#3E2723" android:pathData="M77.633,300H139.7L74.989,52.251c-4.241,-15.732 -20.53,-25.562 -36.738,-21.226c-15.967,4.292 -25.488,20.786 -21.226,36.753L77.633,300z"/>
+    <path android:fillColor="#994C0F" android:pathData="M461.201,330c-11.7,56.7 -43.2,103.2 -85.201,135v47H106v-47c-42.001,-31.8 -73.5,-78.3 -85.201,-135L55.3,300h372.299L461.201,330z"/>
+    <path android:fillColor="#713708" android:pathData="M461.201,330c-11.7,56.7 -43.2,103.2 -85.201,135v47H241V300h186.599L461.201,330z"/>
+    <path android:fillColor="#E5E5E5" android:pathData="M466,270v15c0,15.3 -1.8,30.3 -4.799,45H20.799C17.8,315.3 16,300.3 16,285v-15H466z"/>
+    <path android:fillColor="#C8C6CD" android:pathData="M466,270v15c0,15.3 -1.8,30.3 -4.799,45H241v-60H466z"/>
+    <path android:fillColor="#FEDB41" android:pathData="M256,270v90c0,11.1 -6,20.7 -15,25.8c-4.501,2.701 -9.6,4.2 -15,4.2c-16.5,0 -30,-13.5 -30,-30v30c0,16.5 -13.5,30 -30,30s-30,-13.5 -30,-30V270H256z"/>
+    <path android:fillColor="#FD3018" android:pathData="M256,0l0,111.211l68.789,68.789l111.211,0l0,-180z"/>
+    <path android:fillColor="#FCBF29" android:pathData="M256,270v90c0,11.1 -6,20.7 -15,25.8V270H256z"/>
+</vector>

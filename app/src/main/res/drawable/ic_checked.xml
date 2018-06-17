@@ -1,0 +1,8 @@
+<!--
+  ~ Copyright (c) 2018 Bill Combs
+  -->
+
+<vector android:height="24dp" android:viewportHeight="483.885"
+    android:viewportWidth="483.885" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#00A344" android:pathData="M464.629,27.833c-20.864,-13.568 -50.176,-9.375 -65.439,9.185l-236.8,289.055L83.573,237.21c-16.061,-18.048 -45.501,-21.12 -65.761,-6.881C-2.51,244.567 -5.93,270.838 10.07,288.825l155.295,175.201L474.869,86.073C490.132,67.451 485.554,41.401 464.629,27.833z"/>
+</vector>

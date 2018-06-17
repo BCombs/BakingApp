@@ -26,36 +26,49 @@ public class MainActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
         }
 
-        // If the back stack isn't empty, enable the Up button
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        // If the back stack > 0 enable the home button
+        setHomeButton();
 
+        // Add on Change Listener
         getSupportFragmentManager()
                 .addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
                     @Override
                     public void onBackStackChanged() {
-                        int backStackHeight = getSupportFragmentManager().getBackStackEntryCount();
-                        if (backStackHeight > 0) {
-                            getSupportActionBar().setHomeButtonEnabled(true);
-                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                        } else {
-                            getSupportActionBar().setHomeButtonEnabled(false);
-                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                        }
+                        setHomeButton();
                     }
                 });
 
         if (savedInstanceState == null) {
 
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            ListFragment listFragment = new ListFragment();
-            transaction.add(R.id.fragment_containter, listFragment, "ListFragment");
+            RecipeListFragment recipeListFragment = new RecipeListFragment();
+            transaction.add(R.id.fragment_containter, recipeListFragment, "RecipeListFragment");
             transaction.commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set the title to App Name
+        getSupportActionBar().setTitle(R.string.app_name);
+    }
+
+    /**
+     * Checks if the back stack is empty or not. If it isn't, enable the Home button, if
+     * it is, disable it.
+     */
+    private void setHomeButton() {
+        // If the back stack isn't empty, enable the Up button
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            return;
+        }
+
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override

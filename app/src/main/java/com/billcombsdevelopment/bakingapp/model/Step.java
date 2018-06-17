@@ -63,43 +63,43 @@ public class Step implements Parcelable {
         return 0;
     }
 
-    public int getmStepNumber() {
+    public int getStepNumber() {
         return mStepNumber;
     }
 
-    public void setmStepNumber(int stepNumber) {
+    public void setStepNumber(int stepNumber) {
         this.mStepNumber = stepNumber;
     }
 
-    public String getmShortDescription() {
+    public String getShortDescription() {
         return mShortDescription;
     }
 
-    public void setmShortDescription(String shortDescription) {
+    public void setShortDescription(String shortDescription) {
         this.mShortDescription = shortDescription;
     }
 
-    public String getmDescription() {
+    public String getDescription() {
         return mDescription;
     }
 
-    public void setmDescription(String description) {
+    public void setDescription(String description) {
         this.mDescription = description;
     }
 
-    public String getmVideoUrl() {
+    public String getVideoUrl() {
         return mVideoUrl;
     }
 
-    public void setmVideoUrl(String videoUrl) {
+    public void setVideoUrl(String videoUrl) {
         this.mVideoUrl = videoUrl;
     }
 
-    public String getmThumbnailUrl() {
+    public String getThumbnailUrl() {
         return mThumbnailUrl;
     }
 
-    public void setmThumbnailUrl(String thumbnailUrl) {
+    public void setThumbnailUrl(String thumbnailUrl) {
         this.mThumbnailUrl = thumbnailUrl;
     }
 }

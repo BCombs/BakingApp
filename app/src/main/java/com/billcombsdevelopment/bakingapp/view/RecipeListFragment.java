@@ -7,6 +7,8 @@ package com.billcombsdevelopment.bakingapp.view;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +26,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListFragment extends Fragment implements DataCallback {
+public class RecipeListFragment extends Fragment implements DataCallback {
 
     @BindView(R.id.list_fragment_rv)
     RecyclerView mListRecyclerView;
-    private ListAdapter mAdapter;
+    private RecipeListAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class ListFragment extends Fragment implements DataCallback {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.list_fragment, container, false);
+        View view = inflater.inflate(R.layout.recipe_list_fragment, container, false);
 
         return view;
     }
@@ -62,11 +64,13 @@ public class ListFragment extends Fragment implements DataCallback {
 
     private void initRecyclerView(List<Recipe> recipeList) {
         mListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        mAdapter = new ListAdapter(recipeList, new OnItemClickListener() {
+        mAdapter = new RecipeListAdapter(recipeList, new OnItemClickListener() {
             @Override
             public void onClick(Recipe recipe) {
 
-                Fragment detailFragment = new DetailFragment();
+                Fragment detailFragment = new DetailListFragment();
+
+                // Create the args Bundle and pass in the recipe
                 Bundle args = new Bundle();
                 args.putParcelable("recipe", recipe);
                 detailFragment.setArguments(args);
@@ -74,13 +78,21 @@ public class ListFragment extends Fragment implements DataCallback {
                 FragmentTransaction transaction =
                         getActivity().getSupportFragmentManager().beginTransaction();
 
-                transaction.replace(R.id.fragment_containter, detailFragment, "DetailFragment");
-                transaction.addToBackStack("ListFragment");
+                transaction.replace(R.id.fragment_containter, detailFragment, "DetailListFragment");
+                transaction.addToBackStack("RecipeListFragment");
                 transaction.commit();
 
             }
         });
         mListRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        actionBar.setTitle(R.string.app_name);
     }
 
     @Override

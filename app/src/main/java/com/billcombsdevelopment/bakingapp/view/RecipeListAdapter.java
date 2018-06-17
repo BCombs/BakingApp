@@ -14,18 +14,19 @@ import android.widget.TextView;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
+public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ListViewHolder> {
 
     List<Recipe> mRecipes;
-    ListFragment.OnItemClickListener mListener;
+    RecipeListFragment.OnItemClickListener mListener;
 
-    public ListAdapter(List<Recipe> recipes, ListFragment.OnItemClickListener listener) {
+    public RecipeListAdapter(List<Recipe> recipes, RecipeListFragment.OnItemClickListener listener) {
         mRecipes = recipes;
         mListener = listener;
     }
@@ -34,7 +35,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item, parent, false);
+                .inflate(R.layout.recipe_list_item, parent, false);
 
         return new ListViewHolder(view);
     }
@@ -62,8 +63,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(final Recipe recipe, final ListFragment.OnItemClickListener listener) {
-            mFoodImageView.setImageResource(R.drawable.ic_cupcake);
+        void bind(final Recipe recipe, final RecipeListFragment.OnItemClickListener listener) {
+
+            if(!recipe.getImageUrl().isEmpty()) {
+                // An image is available
+                Picasso.with(itemView.getContext())
+                        .load(recipe.getImageUrl())
+                        .placeholder(R.drawable.ic_cupcake)
+                        .error(R.drawable.ic_cupcake)
+                        .noFade()
+                        .into(mFoodImageView);
+            } else {
+                // No image available, set to default
+                mFoodImageView.setImageResource(R.drawable.ic_cupcake);
+            }
+
             mFoodTextView.setText(recipe.getName());
 
             itemView.setOnClickListener(new View.OnClickListener() {
