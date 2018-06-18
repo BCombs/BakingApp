@@ -45,7 +45,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public int getItemCount() {
-        return mIngredients == null ?  0 : mIngredients.size();
+        return mIngredients == null ? 0 : mIngredients.size();
     }
 
     class IngredientViewHolder extends RecyclerView.ViewHolder {
@@ -70,7 +70,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
 
         private String toUpperCase(String ingredientName) {
-            ingredientName = ingredientName.substring(0,1).toUpperCase()
+            ingredientName = ingredientName.substring(0, 1).toUpperCase()
                     + ingredientName.substring(1);
 
             return ingredientName;

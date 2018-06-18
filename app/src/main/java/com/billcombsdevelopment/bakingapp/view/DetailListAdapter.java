@@ -83,30 +83,47 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
             // Change background color of every other item
             colorBackground(position);
 
-            if (position == 0) {
-                // This is the ingredients item
-                mStepNumberTv.setVisibility(View.GONE);
-                mDetailImageIv.setImageResource(R.drawable.ic_ingredients);
-                mDetailImageIv.setVisibility(View.VISIBLE);
-                mDetailTv.setText(R.string.ingredients);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onClick(null, position);
-                    }
-                });
-            } else {
-                // Steps
-                mDetailImageIv.setVisibility(View.GONE);
-                mStepNumberTv.setVisibility(View.VISIBLE);
-                mStepNumberTv.setText(String.valueOf(step.getStepNumber() + 1));
-                mDetailTv.setText(step.getShortDescription());
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onClick(step, position);
-                    }
-                });
+            switch (position) {
+                case 0:
+                    // This is the ingredients item
+                    mStepNumberTv.setVisibility(View.GONE);
+                    mDetailImageIv.setImageResource(R.drawable.ic_ingredients);
+                    mDetailImageIv.setVisibility(View.VISIBLE);
+                    mDetailTv.setText(R.string.ingredients);
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onClick(null, position);
+                        }
+                    });
+                    break;
+
+                case 1:
+                    // This is the Recipe Introduction, show Recipe Book Icon
+                    mStepNumberTv.setVisibility(View.GONE);
+                    mDetailImageIv.setImageResource(R.drawable.ic_steps);
+                    mDetailImageIv.setVisibility(View.VISIBLE);
+                    mDetailTv.setText(step.getShortDescription());
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onClick(step, position);
+                        }
+                    });
+                    break;
+
+                default:
+                    // Steps
+                    mDetailImageIv.setVisibility(View.GONE);
+                    mStepNumberTv.setVisibility(View.VISIBLE);
+                    mStepNumberTv.setText(String.valueOf(step.getStepNumber()));
+                    mDetailTv.setText(step.getShortDescription());
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onClick(step, position);
+                        }
+                    });
             }
         }
 
@@ -115,7 +132,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
          */
         private void colorBackground(int position) {
 
-            if(position % 2 == 1) {
+            if (position % 2 == 1) {
                 mConstLayout.setBackgroundColor(itemView.getResources()
                         .getColor(R.color.colorCardBackground));
                 mLinearLayout.setBackgroundColor(itemView.getResources()

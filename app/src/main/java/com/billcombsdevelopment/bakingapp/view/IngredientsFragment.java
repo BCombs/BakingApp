@@ -7,8 +7,6 @@ package com.billcombsdevelopment.bakingapp.view;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Ingredient;
@@ -56,7 +53,7 @@ public class IngredientsFragment extends Fragment {
             Log.d("onViewCreated", "mIngredients size: " + mIngredients.size());
         }
 
-        if(getArguments().containsKey("name")) {
+        if (getArguments().containsKey("name")) {
             mRecipeName = getArguments().getString("name");
         }
 
@@ -69,7 +66,6 @@ public class IngredientsFragment extends Fragment {
                 DividerItemDecoration.VERTICAL));
         mIngredientsRv.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
-        mIngredientsRv.setNestedScrollingEnabled(false);
         mAdapter = new IngredientAdapter(mIngredients);
         mIngredientsRv.setAdapter(mAdapter);
 

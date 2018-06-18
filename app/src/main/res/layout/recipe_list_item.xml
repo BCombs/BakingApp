@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018 Bill Combs
   -->
 
@@ -8,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardCornerRadius="6dp"
-    app:cardBackgroundColor="@color/colorCardBackground">
+    app:cardBackgroundColor="@color/colorCardBackground"
+    app:cardCornerRadius="6dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,12 +31,12 @@
             android:id="@+id/food_name_tv"
             android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/list_item_base_text_size"
             android:gravity="center"
             android:textColor="@color/colorAccent"
-            app:layout_constraintTop_toBottomOf="@id/food_preview_iv"
+            android:textSize="@dimen/list_item_base_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/food_preview_iv" />
 
     </android.support.constraint.ConstraintLayout>
 

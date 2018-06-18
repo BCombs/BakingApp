@@ -65,7 +65,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
         void bind(final Recipe recipe, final RecipeListFragment.OnItemClickListener listener) {
 
-            if(!recipe.getImageUrl().isEmpty()) {
+            if (!recipe.getImageUrl().isEmpty()) {
                 // An image is available
                 Picasso.with(itemView.getContext())
                         .load(recipe.getImageUrl())

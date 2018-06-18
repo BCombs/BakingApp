@@ -5,7 +5,6 @@
 package com.billcombsdevelopment.bakingapp.view;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -16,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Ingredient;
@@ -24,7 +22,6 @@ import com.billcombsdevelopment.bakingapp.model.Recipe;
 import com.billcombsdevelopment.bakingapp.model.Step;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +68,7 @@ public class DetailListFragment extends Fragment {
             @Override
             public void onClick(Step step, int position) {
                 // User clicked on the Ingredients item
-                if(position == 0) {
+                if (position == 0) {
                     Fragment ingredientsFragment = new IngredientsFragment();
 
                     // Create the arguments Bundle and pass in the ingredients list and name
@@ -92,7 +89,20 @@ public class DetailListFragment extends Fragment {
 
                 } else {
                     // User clicked on a step
-                    Toast.makeText(getContext(), "Step Clicked", Toast.LENGTH_SHORT).show();
+                    Fragment stepFragment = new StepFragment();
+
+                    // Create the arguments Bundle and pass in the step
+                    Bundle args = new Bundle();
+                    args.putParcelable("step", step);
+                    stepFragment.setArguments(args);
+
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                            .beginTransaction();
+
+                    transaction.replace(R.id.fragment_containter,
+                            stepFragment, "StepFragment");
+                    transaction.addToBackStack("DetailListFragment");
+                    transaction.commit();
                 }
             }
         });
