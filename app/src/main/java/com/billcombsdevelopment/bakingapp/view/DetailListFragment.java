@@ -5,6 +5,8 @@
 package com.billcombsdevelopment.bakingapp.view;
 
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -32,6 +34,8 @@ public class DetailListFragment extends Fragment {
     RecyclerView mDetailListRv;
     private DetailListAdapter mAdapter;
     private Recipe mRecipe;
+    private String mAppBarTitle;
+    private Parcelable mLayoutState;
 
     public DetailListFragment() {
     }
@@ -77,6 +81,7 @@ public class DetailListFragment extends Fragment {
                     ArrayList<Ingredient> ingredients = new ArrayList<>(mRecipe.getIngredients());
                     args.putParcelableArrayList("ingredients", ingredients);
                     args.putString("name", mRecipe.getName());
+                    args.putString("appBarTitle", mAppBarTitle);
                     ingredientsFragment.setArguments(args);
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager()
@@ -94,6 +99,7 @@ public class DetailListFragment extends Fragment {
                     // Create the arguments Bundle and pass in the step
                     Bundle args = new Bundle();
                     args.putParcelable("step", step);
+                    args.putString("appBarTitle", mAppBarTitle);
                     stepFragment.setArguments(args);
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager()
@@ -110,12 +116,24 @@ public class DetailListFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("layoutState", mLayoutState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLayoutState = mDetailListRv.getLayoutManager().onSaveInstanceState();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
-        String title = mRecipe.getName() + " (" + mRecipe.getServings() + " servings)";
-        actionBar.setTitle(title);
+        mAppBarTitle = mRecipe.getName() + " (" + mRecipe.getServings() + " servings)";
+        actionBar.setTitle(mAppBarTitle);
     }
 
     interface OnItemClickListener {

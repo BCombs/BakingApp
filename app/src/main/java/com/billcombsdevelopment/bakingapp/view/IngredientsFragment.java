@@ -7,6 +7,7 @@ package com.billcombsdevelopment.bakingapp.view;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,7 @@ public class IngredientsFragment extends Fragment {
     RecyclerView mIngredientsRv;
     private IngredientAdapter mAdapter;
     private List<Ingredient> mIngredients;
-    private String mRecipeName;
+    private String mAppBarTitle;
 
     public IngredientsFragment() {
     }
@@ -53,8 +54,8 @@ public class IngredientsFragment extends Fragment {
             Log.d("onViewCreated", "mIngredients size: " + mIngredients.size());
         }
 
-        if (getArguments().containsKey("name")) {
-            mRecipeName = getArguments().getString("name");
+        if (getArguments().containsKey("appBarTitle")) {
+            mAppBarTitle = getArguments().getString("appBarTitle");
         }
 
         initRecyclerView();
@@ -69,6 +70,12 @@ public class IngredientsFragment extends Fragment {
         mAdapter = new IngredientAdapter(mIngredients);
         mIngredientsRv.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAppBarTitle);
     }
 
     @Override

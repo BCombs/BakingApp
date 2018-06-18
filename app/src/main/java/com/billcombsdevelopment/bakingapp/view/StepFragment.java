@@ -4,9 +4,12 @@
 
 package com.billcombsdevelopment.bakingapp.view;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -44,6 +48,8 @@ public class StepFragment extends Fragment {
     TextView mDescriptionTv;
     private Step mStep;
     private SimpleExoPlayer mExoPlayer = null;
+    private Long mPlayerPosition = 0L;
+    private String mAppBarTitle;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -64,13 +70,26 @@ public class StepFragment extends Fragment {
             mStep = null;
         }
 
+        if (getArguments().containsKey("appBarTitle")) {
+            mAppBarTitle = getArguments().getString("appBarTitle");
+        }
+
         initUi();
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("playerPosition")) {
+                // Restore position of ExoPlayer
+                mPlayerPosition = savedInstanceState.getLong("playerPosition");
+                if (mExoPlayer != null) {
+                    mExoPlayer.seekTo(mPlayerPosition);
+                }
+            }
+        }
     }
 
     private void initUi() {
         if (mStep.getVideoUrl() != null && !mStep.getVideoUrl().isEmpty()) {
             Uri videoUri = Uri.parse(mStep.getVideoUrl());
-            initMediaSession();
             initPlayer(videoUri);
         } else if (mStep.getThumbnailUrl() != null && !mStep.getThumbnailUrl().isEmpty()) {
             loadImage();
@@ -79,10 +98,6 @@ public class StepFragment extends Fragment {
         }
 
         mDescriptionTv.setText(mStep.getDescription());
-    }
-
-    private void initMediaSession() {
-
     }
 
     private void initPlayer(Uri videoUri) {
@@ -110,12 +125,28 @@ public class StepFragment extends Fragment {
             mExoPlayer.prepare(videoSource);
             mExoPlayer.setPlayWhenReady(true);
         }
+
+        // If in landscape mode go full screen
+        if (getActivity().getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            setFullScreen();
+        }
     }
 
     private void releaseExoPlayer() {
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
+    }
+
+    private void setFullScreen() {
+
+        mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+
+        // hide the AppBar
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
     }
 
     private void loadImage() {
@@ -139,9 +170,22 @@ public class StepFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("playerPosition", mPlayerPosition);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAppBarTitle);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (mExoPlayer != null) {
+            mPlayerPosition = mExoPlayer.getCurrentPosition();
             releaseExoPlayer();
         }
     }
