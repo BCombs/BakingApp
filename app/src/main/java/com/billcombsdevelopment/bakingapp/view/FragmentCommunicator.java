@@ -4,6 +4,9 @@
 
 package com.billcombsdevelopment.bakingapp.view;
 
+/**
+ * Callback for communication between fragment and parent
+ */
 interface FragmentCommunicator {
     void onRecipeSelected(int position);
 
