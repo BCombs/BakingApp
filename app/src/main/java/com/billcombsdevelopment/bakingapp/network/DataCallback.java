@@ -6,9 +6,10 @@ package com.billcombsdevelopment.bakingapp.network;
 
 import com.billcombsdevelopment.bakingapp.model.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface DataCallback {
-    void onSuccess(List<Recipe> recipeList);
+    void onSuccess(ArrayList<Recipe> recipeList);
+
     void onFailure(String message);
 }

@@ -25,8 +25,8 @@ import butterknife.ButterKnife;
 
 public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.DetailViewHolder> {
 
-    private List<Step> mSteps;
-    private DetailListFragment.OnItemClickListener mListener;
+    private final List<Step> mSteps;
+    private final DetailListFragment.OnItemClickListener mListener;
 
     DetailListAdapter(List<Step> steps, DetailListFragment.OnItemClickListener listener) {
         mSteps = steps;
@@ -53,7 +53,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
 
     @Override
     public int getItemCount() {
-        return mSteps.size() + 1;
+        return mSteps == null ? 0 : mSteps.size() + 1;
     }
 
     class DetailViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +73,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
         @BindView(R.id.step_number_tv)
         TextView mStepNumberTv;
 
-        public DetailViewHolder(View itemView) {
+        DetailViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -93,7 +93,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            listener.onClick(null, position);
+                            listener.onClick(position);
                         }
                     });
                     break;
@@ -107,7 +107,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            listener.onClick(step, position);
+                            listener.onClick(position);
                         }
                     });
                     break;
@@ -121,7 +121,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            listener.onClick(step, position);
+                            listener.onClick(position);
                         }
                     });
             }

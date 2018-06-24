@@ -29,6 +29,7 @@ public class Ingredient implements Parcelable {
     @SerializedName("ingredient")
     private String mIngredientName;
 
+    @SuppressWarnings("unused")
     public Ingredient(int quantity, String measurement, String ingredientName) {
         mQuantity = quantity;
         mMeasurement = measurement;
@@ -36,7 +37,7 @@ public class Ingredient implements Parcelable {
     }
 
     private Ingredient(Parcel in) {
-        mQuantity = in.readInt();
+        mQuantity = in.readDouble();
         mMeasurement = in.readString();
         mIngredientName = in.readString();
     }
@@ -57,6 +58,7 @@ public class Ingredient implements Parcelable {
         return mQuantity;
     }
 
+    @SuppressWarnings("unused")
     public void setQuantity(int quantity) {
         this.mQuantity = quantity;
     }
@@ -65,6 +67,7 @@ public class Ingredient implements Parcelable {
         return mMeasurement;
     }
 
+    @SuppressWarnings("unused")
     public void setMeasurement(String measurement) {
         this.mMeasurement = measurement;
     }
@@ -73,6 +76,7 @@ public class Ingredient implements Parcelable {
         return mIngredientName;
     }
 
+    @SuppressWarnings("unused")
     public void setIngredientName(String ingredientName) {
         this.mIngredientName = ingredientName;
     }

@@ -5,107 +5,102 @@
 package com.billcombsdevelopment.bakingapp.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
-import com.billcombsdevelopment.bakingapp.network.DataCallback;
-import com.billcombsdevelopment.bakingapp.network.Requests;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeListFragment extends Fragment implements DataCallback {
+public class RecipeListFragment extends Fragment {
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.list_fragment_rv)
     RecyclerView mListRecyclerView;
     private RecipeListAdapter mAdapter;
+    private ArrayList<Recipe> mRecipeList;
+    private FragmentCommunicator mCommunicator;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recipe_list_fragment, container, false);
 
-        return view;
+        return inflater.inflate(R.layout.recipe_list_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
-        loadData();
+
+        // Set the title
+        if (getActivity() != null) {
+            ((MainActivity) getActivity()).setAppBarTitle(getResources().getString(R.string.app_name));
+        }
+
+        if (getArguments() != null) {
+            mRecipeList = getArguments().getParcelableArrayList("recipeList");
+        }
+
+        mCommunicator = (FragmentCommunicator) getActivity();
+        initRecyclerView(mRecipeList);
+
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
+    private void initRecyclerView(ArrayList<Recipe> recipeList) {
 
-    private void loadData() {
-        Requests request = new Requests();
-        request.getJson(this);
-    }
+        // Initialize cardWidth in pixels
+        int cardWidth = 700;
 
-    private void initRecyclerView(List<Recipe> recipeList) {
-        mListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        // Set the LayoutManager
+        mListRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                calculateSpanCount(cardWidth)));
+
+        // Instantiate the adapter
         mAdapter = new RecipeListAdapter(recipeList, new OnItemClickListener() {
             @Override
-            public void onClick(Recipe recipe) {
-
-                Fragment detailFragment = new DetailListFragment();
-
-                // Create the args Bundle and pass in the recipe
-                Bundle args = new Bundle();
-                args.putParcelable("recipe", recipe);
-                detailFragment.setArguments(args);
-
-                FragmentTransaction transaction =
-                        getActivity().getSupportFragmentManager().beginTransaction();
-
-                transaction.replace(R.id.fragment_containter, detailFragment, "DetailListFragment");
-                transaction.addToBackStack("RecipeListFragment");
-                transaction.commit();
-
+            public void onClick(int position) {
+                mCommunicator.onRecipeSelected(position);
             }
         });
+
         mListRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setTitle(R.string.app_name);
+    /**
+     * Calculates the span count needed for the GridLayoutManager
+     *
+     * @param cardWidth - Width of the card in pixels
+     * @return int - how many columns needed
+     */
+    private int calculateSpanCount(int cardWidth) {
+        // Information about display(size, density, ...)
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        if (getActivity() != null) {
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        }
+
+        // Get the absolute width of the display in pixels
+        float screenWidth = metrics.widthPixels;
+
+        return Math.round(screenWidth / cardWidth);
     }
 
-    @Override
-    public void onSuccess(List<Recipe> recipeList) {
-        initRecyclerView(recipeList);
-    }
-
-    @Override
-    public void onFailure(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
+    /**
+     * Callback to handle when a recipe is selected
+     */
     interface OnItemClickListener {
-        void onClick(Recipe recipe);
+        void onClick(int position);
     }
 }

@@ -6,12 +6,12 @@ package com.billcombsdevelopment.bakingapp.network;
 
 import com.billcombsdevelopment.bakingapp.model.Recipe;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface RecipeApi {
+interface RecipeApi {
     @GET("baking.json")
-    Call<List<Recipe>> getJson();
+    Call<ArrayList<Recipe>> getJson();
 }

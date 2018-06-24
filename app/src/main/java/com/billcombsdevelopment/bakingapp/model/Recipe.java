@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Recipe implements Parcelable {
 
@@ -30,15 +30,15 @@ public class Recipe implements Parcelable {
     @SerializedName("name")
     private String mName;
     @SerializedName("ingredients")
-    private List<Ingredient> mIngredients;
+    private ArrayList<Ingredient> mIngredients;
     @SerializedName("steps")
-    private List<Step> mSteps;
+    private ArrayList<Step> mSteps;
     @SerializedName("servings")
     private int mServings;
     @SerializedName("image")
     private String mImageUrl;
 
-    public Recipe(int id, String name, List<Ingredient> ingredients, List<Step> steps,
+    public Recipe(int id, String name, ArrayList<Ingredient> ingredients, ArrayList<Step> steps,
                   int servings, String imageUrl) {
         mId = id;
         mName = name;
@@ -51,6 +51,8 @@ public class Recipe implements Parcelable {
     private Recipe(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
+        mIngredients = in.readArrayList(Recipe.class.getClassLoader());
+        mSteps = in.readArrayList(Recipe.class.getClassLoader());
         mServings = in.readInt();
         mImageUrl = in.readString();
     }
@@ -59,6 +61,8 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mId);
         dest.writeString(mName);
+        dest.writeList(mIngredients);
+        dest.writeList(mSteps);
         dest.writeInt(mServings);
         dest.writeString(mImageUrl);
     }
@@ -84,19 +88,19 @@ public class Recipe implements Parcelable {
         mName = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return mIngredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         mIngredients = ingredients;
     }
 
-    public List<Step> getSteps() {
+    public ArrayList<Step> getSteps() {
         return mSteps;
     }
 
-    public void setSteps(List<Step> steps) {
+    public void setSteps(ArrayList<Step> steps) {
         mSteps = steps;
     }
 

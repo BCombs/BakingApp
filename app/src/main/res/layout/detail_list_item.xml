@@ -4,6 +4,7 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_list_constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,14 +23,14 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_ingredients" />
+            android:src="@drawable/ic_ingredients"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/step_number_tv"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="1"
             android:textColor="@color/colorBlack"
             android:textSize="40sp"
             android:visibility="gone" />
@@ -40,7 +41,6 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="5dp"
-            android:text="Ingredients"
             android:textColor="@color/colorBlack"
             android:textSize="18sp" />
 

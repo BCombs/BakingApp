@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Baking App</string>
     <string name="ingredients">Ingredients</string>
+
+    <!-- Used in app bar title showing amount of servings -->
+    <string name="servings">servings</string>
+
+    <!-- Used for content description of food images in recipe list -->
+    <string name="food_preview_image">Image of food</string>
 </resources>

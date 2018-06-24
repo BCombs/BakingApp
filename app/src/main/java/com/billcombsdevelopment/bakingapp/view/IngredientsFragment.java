@@ -7,11 +7,9 @@ package com.billcombsdevelopment.bakingapp.view;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,36 +24,30 @@ import butterknife.ButterKnife;
 
 public class IngredientsFragment extends Fragment {
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.ingredients_rv)
     RecyclerView mIngredientsRv;
     private IngredientAdapter mAdapter;
     private List<Ingredient> mIngredients;
-    private String mAppBarTitle;
 
     public IngredientsFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.ingredients_fragment, container, false);
 
-        return view;
+        return inflater.inflate(R.layout.ingredients_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         ButterKnife.bind(this, view);
 
-        if (getArguments().containsKey("ingredients")) {
+        if (getArguments() != null && getArguments().containsKey("ingredients")) {
             mIngredients = getArguments().getParcelableArrayList("ingredients");
-            Log.d("onViewCreated", "mIngredients size: " + mIngredients.size());
-        }
-
-        if (getArguments().containsKey("appBarTitle")) {
-            mAppBarTitle = getArguments().getString("appBarTitle");
         }
 
         initRecyclerView();
@@ -63,23 +55,14 @@ public class IngredientsFragment extends Fragment {
 
     private void initRecyclerView() {
 
-        mIngredientsRv.addItemDecoration(new DividerItemDecoration(getActivity(),
-                DividerItemDecoration.VERTICAL));
+        if (getActivity() != null) {
+            mIngredientsRv.addItemDecoration(new DividerItemDecoration(getActivity(),
+                    DividerItemDecoration.VERTICAL));
+        }
         mIngredientsRv.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         mAdapter = new IngredientAdapter(mIngredients);
         mIngredientsRv.setAdapter(mAdapter);
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAppBarTitle);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 }

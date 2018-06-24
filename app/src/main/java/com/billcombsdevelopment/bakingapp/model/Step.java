@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class Step implements Parcelable {
     public static final Creator<Step> CREATOR = new Creator<Step>() {
         @Override
@@ -41,7 +42,7 @@ public class Step implements Parcelable {
         mThumbnailUrl = thumbnailUrl;
     }
 
-    protected Step(Parcel in) {
+    private Step(Parcel in) {
         mStepNumber = in.readInt();
         mShortDescription = in.readString();
         mDescription = in.readString();

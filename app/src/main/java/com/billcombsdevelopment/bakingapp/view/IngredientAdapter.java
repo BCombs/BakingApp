@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    private List<Ingredient> mIngredients;
+    private final List<Ingredient> mIngredients;
 
     IngredientAdapter(List<Ingredient> ingredients) {
         mIngredients = ingredients;
@@ -56,7 +56,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @BindView(R.id.quantity_tv)
         TextView mQuantityTextView;
 
-        public IngredientViewHolder(View itemView) {
+        IngredientViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);

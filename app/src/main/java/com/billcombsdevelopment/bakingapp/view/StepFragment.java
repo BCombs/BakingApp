@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,38 +39,36 @@ import butterknife.ButterKnife;
 
 public class StepFragment extends Fragment {
 
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.step_exo_player)
     PlayerView mPlayerView;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.step_iv)
     ImageView mStepIv;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.description_tv)
     TextView mDescriptionTv;
     private Step mStep;
     private SimpleExoPlayer mExoPlayer = null;
     private Long mPlayerPosition = 0L;
-    private String mAppBarTitle;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.step_fragment, container, false);
-        return view;
+
+        return inflater.inflate(R.layout.step_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         ButterKnife.bind(this, view);
 
-        if (getArguments().containsKey("step")) {
+        if (getArguments() != null && getArguments().containsKey("step")) {
             mStep = getArguments().getParcelable("step");
         } else {
             mStep = null;
-        }
-
-        if (getArguments().containsKey("appBarTitle")) {
-            mAppBarTitle = getArguments().getString("appBarTitle");
         }
 
         initUi();
@@ -118,16 +115,17 @@ public class StepFragment extends Fragment {
                     getResources().getString(R.string.app_name));
 
             // Prepare MediaSource
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(videoUri);
-
-            mExoPlayer.prepare(videoSource);
-            mExoPlayer.setPlayWhenReady(true);
+            if (getContext() != null) {
+                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
+                MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(videoUri);
+                mExoPlayer.prepare(videoSource);
+                mExoPlayer.setPlayWhenReady(true);
+            }
         }
 
         // If in landscape mode go full screen
-        if (getActivity().getResources().getConfiguration().orientation ==
+        if (getActivity() != null && getActivity().getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE) {
             setFullScreen();
         }
@@ -140,13 +138,7 @@ public class StepFragment extends Fragment {
     }
 
     private void setFullScreen() {
-
         mPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-
-        // hide the AppBar
-        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        }
     }
 
     private void loadImage() {
@@ -173,12 +165,6 @@ public class StepFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong("playerPosition", mPlayerPosition);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mAppBarTitle);
     }
 
     @Override

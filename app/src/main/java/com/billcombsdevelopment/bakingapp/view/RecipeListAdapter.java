@@ -23,8 +23,8 @@ import butterknife.ButterKnife;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ListViewHolder> {
 
-    List<Recipe> mRecipes;
-    RecipeListFragment.OnItemClickListener mListener;
+    private final List<Recipe> mRecipes;
+    private final RecipeListFragment.OnItemClickListener mListener;
 
     public RecipeListAdapter(List<Recipe> recipes, RecipeListFragment.OnItemClickListener listener) {
         mRecipes = recipes;
@@ -43,7 +43,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
         Recipe recipe = mRecipes.get(position);
-        holder.bind(recipe, mListener);
+        holder.bind(recipe, position, mListener);
     }
 
     @Override
@@ -58,12 +58,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
         @BindView(R.id.food_name_tv)
         TextView mFoodTextView;
 
-        public ListViewHolder(View itemView) {
+        ListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(final Recipe recipe, final RecipeListFragment.OnItemClickListener listener) {
+        void bind(final Recipe recipe, final int position,
+                  final RecipeListFragment.OnItemClickListener listener) {
 
             if (!recipe.getImageUrl().isEmpty()) {
                 // An image is available
@@ -84,7 +85,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
                 @Override
                 public void onClick(View v) {
-                    listener.onClick(recipe);
+                    listener.onClick(position);
                 }
             });
         }
