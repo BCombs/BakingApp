@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
+import com.billcombsdevelopment.bakingapp.ui.adapters.RecipeListAdapter;
 
 import java.util.ArrayList;
 
@@ -67,7 +68,7 @@ public class RecipeListFragment extends Fragment {
                 calculateSpanCount(cardWidth)));
 
         // Instantiate the adapter
-        mAdapter = new RecipeListAdapter(recipeList, new OnItemClickListener() {
+        mAdapter = new RecipeListAdapter(recipeList, new OnClickListener() {
             @Override
             public void onClick(int position) {
                 mCommunicator.onRecipeSelected(position);
@@ -97,10 +98,4 @@ public class RecipeListFragment extends Fragment {
         return Math.round(screenWidth / cardWidth);
     }
 
-    /**
-     * Callback to handle when a recipe is selected
-     */
-    interface OnItemClickListener {
-        void onClick(int position);
-    }
 }

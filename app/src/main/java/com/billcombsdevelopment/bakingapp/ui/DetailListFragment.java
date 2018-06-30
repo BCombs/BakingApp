@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
+import com.billcombsdevelopment.bakingapp.ui.adapters.DetailListAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,7 +81,7 @@ public class DetailListFragment extends Fragment {
                             getContext(), LinearLayoutManager.VERTICAL, false));
         }
 
-        mAdapter = new DetailListAdapter(mRecipe.getSteps(), new OnItemClickListener() {
+        mAdapter = new DetailListAdapter(mRecipe.getSteps(), new OnClickListener() {
             @Override
             public void onClick(int position) {
                 mCommunicator.updateUi(position);
@@ -99,9 +100,5 @@ public class DetailListFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mLayoutState = mDetailListRv.getLayoutManager().onSaveInstanceState();
-    }
-
-    interface OnItemClickListener {
-        void onClick(int position);
     }
 }

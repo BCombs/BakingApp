@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui.adapters;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Step;
+import com.billcombsdevelopment.bakingapp.ui.OnClickListener;
 
 import java.util.List;
 
@@ -26,9 +27,9 @@ import butterknife.ButterKnife;
 public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.DetailViewHolder> {
 
     private final List<Step> mSteps;
-    private final DetailListFragment.OnItemClickListener mListener;
+    private final OnClickListener mListener;
 
-    DetailListAdapter(List<Step> steps, DetailListFragment.OnItemClickListener listener) {
+    public DetailListAdapter(List<Step> steps, OnClickListener listener) {
         mSteps = steps;
         mListener = listener;
     }
@@ -78,7 +79,7 @@ public class DetailListAdapter extends RecyclerView.Adapter<DetailListAdapter.De
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(final Step step, final int position, final DetailListFragment.OnItemClickListener listener) {
+        void bind(final Step step, final int position, final OnClickListener listener) {
 
             // Change background color of every other item
             colorBackground(position);

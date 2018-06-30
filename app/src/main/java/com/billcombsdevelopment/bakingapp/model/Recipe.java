@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe implements Parcelable {
 
@@ -30,9 +31,9 @@ public class Recipe implements Parcelable {
     @SerializedName("name")
     private String mName;
     @SerializedName("ingredients")
-    private ArrayList<Ingredient> mIngredients;
+    private List<Ingredient> mIngredients = null;
     @SerializedName("steps")
-    private ArrayList<Step> mSteps;
+    private List<Step> mSteps = null;
     @SerializedName("servings")
     private int mServings;
     @SerializedName("image")
@@ -51,8 +52,10 @@ public class Recipe implements Parcelable {
     private Recipe(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
-        mIngredients = in.readArrayList(Recipe.class.getClassLoader());
-        mSteps = in.readArrayList(Recipe.class.getClassLoader());
+        mIngredients = new ArrayList<>();
+        in.readList(mIngredients, Ingredient.class.getClassLoader());
+        mSteps = new ArrayList<>();
+        in.readList(mSteps, Step.class.getClassLoader());
         mServings = in.readInt();
         mImageUrl = in.readString();
     }
@@ -88,19 +91,19 @@ public class Recipe implements Parcelable {
         mName = name;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return mIngredients;
     }
 
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         mIngredients = ingredients;
     }
 
-    public ArrayList<Step> getSteps() {
+    public List<Step> getSteps() {
         return mSteps;
     }
 
-    public void setSteps(ArrayList<Step> steps) {
+    public void setSteps(List<Step> steps) {
         mSteps = steps;
     }
 

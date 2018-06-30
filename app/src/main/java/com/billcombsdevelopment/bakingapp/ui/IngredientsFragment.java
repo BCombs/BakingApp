@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Ingredient;
+import com.billcombsdevelopment.bakingapp.ui.adapters.IngredientAdapter;
 
 import java.util.List;
 

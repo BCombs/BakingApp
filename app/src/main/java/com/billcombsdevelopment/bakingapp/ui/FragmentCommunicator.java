@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui;
 
 /**
  * Callback for communication between fragment and parent

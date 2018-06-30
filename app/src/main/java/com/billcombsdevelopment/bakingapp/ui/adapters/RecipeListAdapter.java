@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
+import com.billcombsdevelopment.bakingapp.ui.OnClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,9 +25,9 @@ import butterknife.ButterKnife;
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ListViewHolder> {
 
     private final List<Recipe> mRecipes;
-    private final RecipeListFragment.OnItemClickListener mListener;
+    private final OnClickListener mListener;
 
-    public RecipeListAdapter(List<Recipe> recipes, RecipeListFragment.OnItemClickListener listener) {
+    public RecipeListAdapter(List<Recipe> recipes, OnClickListener listener) {
         mRecipes = recipes;
         mListener = listener;
     }
@@ -64,7 +65,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
         }
 
         void bind(final Recipe recipe, final int position,
-                  final RecipeListFragment.OnItemClickListener listener) {
+                  final OnClickListener listener) {
 
             if (!recipe.getImageUrl().isEmpty()) {
                 // An image is available

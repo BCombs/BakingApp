@@ -7,4 +7,9 @@
 
     <!-- Used for content description of food images in recipe list -->
     <string name="food_preview_image">Image of food</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <!-- Used when no recipe is selected for widget -->
+    <string name="no_recipe_selected">No Recipe Selected</string>
 </resources>

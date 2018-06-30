@@ -2,27 +2,27 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.billcombsdevelopment.bakingapp.R;
+import com.billcombsdevelopment.bakingapp.model.Ingredient;
 import com.billcombsdevelopment.bakingapp.model.Recipe;
 import com.billcombsdevelopment.bakingapp.network.DataCallback;
 import com.billcombsdevelopment.bakingapp.network.Requests;
+import com.billcombsdevelopment.bakingapp.widget.RecipeWidgetUpdateService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DataCallback, FragmentCommunicator {
 
@@ -66,17 +66,13 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
                 mCurrentRecipe = savedInstanceState.getParcelable("currentRecipe");
             }
 
-            // If we are in two-pane and there is no fragment in the secondary fragment container
-            // it means we are viewing the main recipe list so we need to make sure we are showing
-            // in single-pane
             if (mTwoPane) {
-
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.secondary_fragment_container);
-                if (fragment == null) {
+                // If the secondary fragment container is null, we are viewing the recipe list
+                // which needs to be full screen
+                if (findViewById(R.id.secondary_fragment_container) == null) {
                     setSinglePane();
                 }
             }
-
         } else {
             loadData();
         }
@@ -88,7 +84,9 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     }
 
     /**
-     * Set the UI Fragment layout (single or two-pane)
+     * When the user is viewing the RecipeListFragment (home ui) it will always be full screen
+     * regardless of two-pane or not. If we are two-pane, we need to hide the
+     * secondary fragment container and make the primary fragment container match parent
      */
     private void setHomeUi() {
 
@@ -122,51 +120,28 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     }
 
     /**
-     * Hides the secondary fragment container and set the primary fragment container
-     * to full screen.
+     * Hides the secondary fragment container and divider making the primary fragment container
+     * take up full screen
      */
     private void setSinglePane() {
-
+        // Hide the secondary fragment container and divider
         FrameLayout secondaryFragmentContainer = findViewById(R.id.secondary_fragment_container);
-        View divider = findViewById(R.id.divider);
-
-        // Hide the divider and secondary fragment container
-        divider.setVisibility(View.GONE);
         secondaryFragmentContainer.setVisibility(View.GONE);
 
-        // Make the Recipe fragment fill the activity
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        FrameLayout primaryFragmentContainer = findViewById(R.id.primary_fragment_container);
-        primaryFragmentContainer.setLayoutParams(params);
+        View divider = findViewById(R.id.divider);
+        divider.setVisibility(View.GONE);
     }
 
     /**
-     * Sets the dimensions of the primary and secondary fragment containers for two-pane layout.
+     * Show the secondary fragment container and divider
      */
     private void setTwoPane() {
-
-        // Fragment containers
-        FrameLayout primaryFragmentContainer = findViewById(R.id.primary_fragment_container);
+        // Show the secondary fragment container and divider
         FrameLayout secondaryFragmentContainer = findViewById(R.id.secondary_fragment_container);
+        secondaryFragmentContainer.setVisibility(View.VISIBLE);
 
         View divider = findViewById(R.id.divider);
-
-        // Show the divider and secondary fragment container
         divider.setVisibility(View.VISIBLE);
-        secondaryFragmentContainer.setVisibility(View.VISIBLE);
-        LinearLayout.LayoutParams params = new
-                LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                3);
-        secondaryFragmentContainer.setLayoutParams(params);
-
-        // Make the Recipe fragment match parent
-        params = new
-                LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        primaryFragmentContainer.setLayoutParams(params);
     }
 
     /**
@@ -194,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("recipeList", mRecipeList);
+        outState.putParcelableArrayList("recipeList", (ArrayList<Recipe>) mRecipeList);
         outState.putParcelable("currentRecipe", mCurrentRecipe);
     }
 
@@ -251,12 +226,14 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
         }
     }
 
+    // Callback for DataCallback
     @Override
-    public void onSuccess(ArrayList<Recipe> recipeList) {
-        mRecipeList = recipeList;
+    public void onSuccess(List<Recipe> recipeList) {
+        mRecipeList = (ArrayList<Recipe>) recipeList;
         setHomeUi();
     }
 
+    // Callback for DataCallback
     @Override
     public void onFailure(String message) {
         // Show the user the error message
@@ -273,6 +250,9 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
 
         // Update the currently selected recipe
         mCurrentRecipe = mRecipeList.get(position);
+
+        // Update the widget
+        startActionUpdateRecipeWidget();
 
         if (mTwoPane) {
 
@@ -293,9 +273,9 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
             transaction.addToBackStack("RecipeListFragment");
             transaction.commit();
 
-            // Attach the ingredient fragment initially
+            // Attach the ingredient fragment
             args = new Bundle();
-            args.putParcelableArrayList("ingredients", mCurrentRecipe.getIngredients());
+            args.putParcelableArrayList("ingredients", (ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(args);
 
@@ -322,6 +302,13 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     }
 
     /**
+     * Update the widget
+     */
+    private void startActionUpdateRecipeWidget() {
+        RecipeWidgetUpdateService.startActionUpdateRecipeWidgets(this, mCurrentRecipe);
+    }
+
+    /**
      * Callback for when the user clicks on the ingredients or a step in the
      * StepFragment
      *
@@ -343,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
                     IngredientsFragment ingredientsFragment = new IngredientsFragment();
                     Bundle args = new Bundle();
                     args.putParcelableArrayList("ingredients",
-                            mCurrentRecipe.getIngredients());
+                            (ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
                     ingredientsFragment.setArguments(args);
 
                     // Replace the detail fragment
@@ -356,7 +343,8 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
                     // Get the ingredients for the current recipe and add it as an argument
                     // of the fragment
                     Bundle args = new Bundle();
-                    args.putParcelableArrayList("ingredients", mCurrentRecipe.getIngredients());
+                    args.putParcelableArrayList("ingredients",
+                            (ArrayList<Ingredient>) mCurrentRecipe.getIngredients());
                     ingredientsFragment.setArguments(args);
 
                     // Replace the current fragment with IngredientsFragment

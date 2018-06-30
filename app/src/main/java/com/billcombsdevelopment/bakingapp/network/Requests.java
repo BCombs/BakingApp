@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.billcombsdevelopment.bakingapp.model.Recipe;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,17 +25,17 @@ public class Requests {
         Retrofit client = RetrofitClient.getInstance();
         RecipeApi recipeApi = client.create(RecipeApi.class);
 
-        Call<ArrayList<Recipe>> call = recipeApi.getJson();
+        Call<List<Recipe>> call = recipeApi.getJson();
 
-        call.enqueue(new Callback<ArrayList<Recipe>>() {
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
-                ArrayList<Recipe> recipes = response.body();
+            public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
+                List<Recipe> recipes = response.body();
                 callback.onSuccess(recipes);
             }
 
             @Override
-            public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
                 Log.d("onFailure", t.getMessage());
                 callback.onFailure(t.getMessage());
             }

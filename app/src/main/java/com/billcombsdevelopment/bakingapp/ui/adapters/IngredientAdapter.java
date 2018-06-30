@@ -2,7 +2,7 @@
  * Copyright (c) 2018 Bill Combs
  */
 
-package com.billcombsdevelopment.bakingapp.view;
+package com.billcombsdevelopment.bakingapp.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.billcombsdevelopment.bakingapp.R;
 import com.billcombsdevelopment.bakingapp.model.Ingredient;
+import com.billcombsdevelopment.bakingapp.util.Utils;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     private final List<Ingredient> mIngredients;
 
-    IngredientAdapter(List<Ingredient> ingredients) {
+    public IngredientAdapter(List<Ingredient> ingredients) {
         mIngredients = ingredients;
     }
 
@@ -63,17 +64,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
 
         void bind(Ingredient ingredient) {
-            String ingredientName = toUpperCase(ingredient.getIngredientName());
+            String ingredientName = Utils.toUpperCase(ingredient.getIngredientName());
             mIngredientTv.setText(ingredientName);
             String amount = ingredient.getQuantity() + " " + ingredient.getMeasurement();
             mQuantityTextView.setText(amount);
-        }
-
-        private String toUpperCase(String ingredientName) {
-            ingredientName = ingredientName.substring(0, 1).toUpperCase()
-                    + ingredientName.substring(1);
-
-            return ingredientName;
         }
     }
 }
