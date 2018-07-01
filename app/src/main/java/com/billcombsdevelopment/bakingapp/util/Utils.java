@@ -13,8 +13,10 @@ public class Utils {
      * @return new String object with the first char upper case
      */
     public static String toUpperCase(String string) {
-        string = string.substring(0, 1).toUpperCase()
-                + string.substring(1);
+        if (!string.isEmpty()) {
+            string = string.substring(0, 1).toUpperCase()
+                    + string.substring(1);
+        }
 
         return string;
     }
