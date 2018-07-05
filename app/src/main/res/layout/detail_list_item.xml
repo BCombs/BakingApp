@@ -20,7 +20,7 @@
 
         <ImageView
             android:id="@+id/detail_list_item_iv"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/detail_list_item_layout_width"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_ingredients"
@@ -28,11 +28,11 @@
 
         <TextView
             android:id="@+id/step_number_tv"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/detail_list_item_layout_width"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/colorBlack"
-            android:textSize="40sp"
+            android:textSize="@dimen/detail_list_item_text_size"
             android:visibility="gone" />
 
         <TextView
@@ -40,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/small"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_small" />
 
     </LinearLayout>
 

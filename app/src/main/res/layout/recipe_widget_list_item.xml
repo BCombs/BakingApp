@@ -6,11 +6,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/small"
     android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="40dp"
+        android:layout_width="@dimen/large_40"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/ic_checked"
@@ -25,18 +25,18 @@
             android:id="@+id/widget_ingredient_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
+            android:paddingEnd="@dimen/small"
+            android:paddingStart="@dimen/small"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_small" />
 
         <TextView
             android:id="@+id/widget_quantity_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:textSize="18sp" />
+            android:paddingEnd="@dimen/small"
+            android:paddingStart="@dimen/small"
+            android:textSize="@dimen/text_size_small" />
 
     </LinearLayout>
 
