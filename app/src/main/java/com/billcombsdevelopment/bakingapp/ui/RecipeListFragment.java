@@ -44,7 +44,7 @@ public class RecipeListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
 
-        // Set the title
+        // Set the title and get an IdlingResource
         if (getActivity() != null) {
             ((MainActivity) getActivity()).setAppBarTitle(getResources().getString(R.string.app_name));
         }

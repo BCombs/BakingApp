@@ -5,6 +5,9 @@
 package com.billcombsdevelopment.bakingapp.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +32,15 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     private ArrayList<Recipe> mRecipeList = null;
     private Recipe mCurrentRecipe = null;
     private boolean mTwoPane;
+    @Nullable
+    private BasicIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getIdlingResource();
 
         // Initialize AppBar
         Toolbar toolbar = findViewById(R.id.main_toolbar);
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
                 }
             }
         } else {
+            mIdlingResource.setIdleState(false);
             loadData();
         }
     }
@@ -86,12 +94,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     /**
      * When the user is viewing the RecipeListFragment (home ui) it will always be full screen
      * regardless of two-pane or not. If we are two-pane, we need to hide the
-     * secondary fragment container and make the primary fragment container match parent
+     * secondary fragment container
      */
     private void setHomeUi() {
 
         if (mTwoPane) {
-
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             setSinglePane();
@@ -105,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
             transaction.replace(R.id.primary_fragment_container, recipeListFragment, "RecipeListFragment");
             transaction.commit();
         } else {
-
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             Bundle args = new Bundle();
@@ -117,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
             transaction.commit();
         }
 
+        // Data is loaded, set idle state to true
+        mIdlingResource.setIdleState(true);
     }
 
     /**
@@ -133,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     }
 
     /**
-     * Show the secondary fragment container and divider
+     * Show the secondary fragment container and divider for master/detail
      */
     private void setTwoPane() {
         // Show the secondary fragment container and divider
@@ -169,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("recipeList", (ArrayList<Recipe>) mRecipeList);
+        outState.putParcelableArrayList("recipeList", mRecipeList);
         outState.putParcelable("currentRecipe", mCurrentRecipe);
     }
 
@@ -388,5 +396,14 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Fra
                     transaction.commit();
                 }
         }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public BasicIdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new BasicIdlingResource();
+        }
+        return mIdlingResource;
     }
 }
