@@ -1,4 +1,6 @@
 # BakingApp
 Project 4 - Baking App for Udacity
 
-In Progress - Allow user to select a recipe and see video-guided steps for how to complete it.
+Status - Completed
+
+App to view video recipes that incorporates media loading, example UI tests, integrated third party libraries and provides a complete UX with home screen widget.
